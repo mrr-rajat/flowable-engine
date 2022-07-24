@@ -57,7 +57,6 @@ public class AmogaTaskListener implements TaskListener {
             if("complete".equalsIgnoreCase(delegateTask.getEventName())){
                 for (VariableInstance variable: delegateTask.getVariableInstances().values()){
                     delegateTask.setVariableLocal("local_"
-                            + delegateTask.getTaskDefinitionKey() + "_"
                             + variable.getName(), variable.getValue());
                 }
             }
