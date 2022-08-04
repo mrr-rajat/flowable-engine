@@ -81,7 +81,7 @@ public class CDTaskListener
       if ("delete".equalsIgnoreCase(delegateTask.getEventName())) {
         delegateTask.setVariable(delegateTask.getCategory() + "__status", "task_completed");
       }
-      String event = "{\n    \"task\":\"" + delegateTask.getTaskDefinitionKey() + "\",\n    \"task_id\":\"" + delegateTask.getId() + "\",\n    \"process\":\"" + delegateTask.getProcessDefinitionId() + "\",\n    \"processId\":\"" + delegateTask.getProcessInstanceId() + "\",\n    \"assignee\":\"" + delegateTask.getAssignee() + "\",\n    \"event\":\"" + delegateTask.getEventName() + "\"\n}";
+      String event = "{\n\"task\":\"" + delegateTask.getTaskDefinitionKey() + "\",\n    \"task_id\":\"" + delegateTask.getId() + "\",\n    \"process\":\"" + delegateTask.getProcessDefinitionId() + "\",\n    \"processId\":\"" + delegateTask.getProcessInstanceId() + "\",\n    \"assignee\":\"" + delegateTask.getAssignee() + "\",\n    \"event\":\"" + delegateTask.getEventName() + "\"\n}";
       
       kafkaTemplate().send("amoga-task-assignment-topic", event);
     }
