@@ -48,23 +48,27 @@ public class AmogaTaskListener implements TaskListener {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<Map<String, String>> entity = new HttpEntity<Map<String, String>>(body,headers);
-        restTemplate.exchange("http://localhost:8080/products", HttpMethod.POST, entity, String.class).getBody();
+        restTemplate.exchange("https://dev.amoga.io/api/v1/core/sendmail", HttpMethod.POST, entity, String.class).getBody();
     }
 
     @Override
     public void notify(DelegateTask delegateTask) {
         try {
-            if("complete".equalsIgnoreCase(delegateTask.getEventName())){
-                for (VariableInstance variable: delegateTask.getVariableInstances().values()){
-                    delegateTask.setVariableLocal("local_"
-                            + variable.getName(), variable.getValue());
+            if ("complete".equalsIgnoreCase(delegateTask.getEventName())) {
+                for (VariableInstance variable : delegateTask.getVariableInstances().values()) {
+                    delegateTask.setVariableLocal("amoTaskLocal_" + variable
+                            .getName(), variable.getValue());
                 }
             }
-
-            if ("assignment".equalsIgnoreCase(delegateTask.getEventName())){
+            if ("create".equalsIgnoreCase(delegateTask.getEventName())) {
+                delegateTask.setVariable(delegateTask.getCategory() + "__status", "toDo");
+            }
+            if ("assignment".equalsIgnoreCase(delegateTask.getEventName())) {
                 sendEmail(delegateTask);
             }
-
+            if ("delete".equalsIgnoreCase(delegateTask.getEventName())) {
+                delegateTask.setVariable(delegateTask.getCategory() + "__status", "task_completed");
+            }
             String event = "{\n" +
                     "    \"task\":\"" + delegateTask.getTaskDefinitionKey() + "\",\n" +
                     "    \"task_id\":\"" + delegateTask.getId() + "\",\n" +
