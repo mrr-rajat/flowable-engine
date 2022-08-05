@@ -36,7 +36,7 @@ public class ScriptExecutionListenerTest extends PluggableFlowableTestCase {
 
     @Test
     @Deployment(resources = { "org/flowable/examples/bpmn/executionlistener/ScriptExecutionListenerTest.bpmn20.xml" })
-    public void testScriptExecutionListener() {
+    public void testExecutionListener() {
         ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("scriptExecutionListenerProcess");
 
         if (HistoryTestHelper.isHistoryLevelAtLeast(HistoryLevel.ACTIVITY, processEngineConfiguration)) {
